@@ -1,17 +1,17 @@
 import os
 import polars as pl
 from typing import List
-from random_fill_logic import random_fill_logic
-from validate_quiz_metadata import validate_quiz_metadata
+from test_functions import random_fill_logic
+from validate_inputs import validate_quiz_metadata
 
 
 def create_answer_sheets(player_list: List[str] = None,
                          write_path: str = "",
                          force_overwrite: bool = False,
-                         fill_test_values: bool = False):
-    meta_file = "quiz_metadata.xlsx"
+                         fill_test_values: bool = False,
+                         meta_file: str = ""):
     template_file = "template_answer_sheet.xlsx"
-    metadata_df = pl.read_excel(source="quiz_metadata.xlsx",
+    metadata_df = pl.read_excel(source=meta_file,
                                 read_csv_options={"dtypes": {"Question": pl.Utf8},
                                                   "truncate_ragged_lines": True})\
         .drop_nulls("Question")

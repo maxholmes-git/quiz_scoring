@@ -1,9 +1,6 @@
 import polars as pl
-from create_answer_sheets import create_answer_sheets
-from least_popular_logic import least_popular_logic
-from aggregate_difficulty_logic import aggregate_difficulty_logic
-from text_logic import text_logic
-from create_master_df import create_master_df
+from round_logic import least_popular_logic, aggregate_difficulty_logic, text_logic
+from core_functions import create_answer_sheets, create_master_df, lock_answers
 
 
 def score_logic(player, player_list):
@@ -82,12 +79,16 @@ def create_round_scoring_df(df, player_list):
 
 def main():
     player_list = ["Max", "Sophie", "Michael", "Edward"]
-    score_sheets_path = "C:\\Users\\ready\\Desktop\\Quiz_test_files\\Quiz_player_scoresheets\\"
+    scoresheets_path = "C:\\Users\\ready\\Desktop\\Quiz_test_files\\Quiz_player_scoresheets\\"
+    metadata_path = "C:\\Users\\ready\\PycharmProjects\\Quiz_polars\\quiz_metadata.xlsx"
     create_answer_sheets(player_list,
-                         write_path=score_sheets_path,
+                         write_path=scoresheets_path,
                          force_overwrite=True,
-                         fill_test_values=True)
-    master_df = create_master_df(player_list, read_path=score_sheets_path)
+                         fill_test_values=True,
+                         meta_file=metadata_path)
+    master_df = create_master_df(player_list,
+                                 scoresheets_path=scoresheets_path,
+                                 meta_file=metadata_path)
 
     locked_answers_path = "C:\\Users\\ready\\Desktop\\Quiz_test_files\\Locked_answer_csvs\\"
     master_df = lock_answers(master_df,

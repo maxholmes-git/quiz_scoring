@@ -1,9 +1,11 @@
 import polars as pl
 from typing import List
-from validate_answer_sheet import validate_answer_sheet
+from validate_inputs import validate_answer_sheet
 
 
-def create_master_df(player_list: List[str] = None, read_path: str = ""):
+def create_master_df(player_list: List[str] = None,
+                     scoresheets_path: str = "",
+                     meta_file: str = ""):
     """
     Description:
         Creates the master dataframe which includes all metadata about rounds and questions joined
@@ -12,14 +14,14 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
     Args:
         player_list:
             List of players.
-        read_path:
+        scoresheets_path:
             Directory in which player answer sheets exist.
 
     Returns:
         master_df:
             The master dataframe (metadata + answers)
     """
-    master_df = pl.read_excel("quiz_metadata.xlsx",
+    master_df = pl.read_excel(meta_file,
                               read_csv_options={"dtypes": {"Question": pl.Utf8},
                                                 "truncate_ragged_lines": True}) \
         .with_columns(pl.col("Question").cast(pl.Utf8)) \
@@ -28,7 +30,7 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
         .drop_nulls("Question")
 
     for player in player_list:
-        player_df = pl.read_excel(f"{read_path + player}.xlsx",
+        player_df = pl.read_excel(f"{scoresheets_path + player}.xlsx",
                                   read_csv_options={"dtypes": {"Question": pl.Utf8},
                                                     "truncate_ragged_lines": True})
         validate_answer_sheet(player, player_df, master_df)
@@ -41,6 +43,6 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
 
 if __name__ == "__main__":
     player_list = ["Max", "Sophie", "Michael", "Edward"]
-    read_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
-    master_df = create_master_df(player_list, read_path)
+    scoresheets_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
+    master_df = create_master_df(player_list, scoresheets_path)
 
