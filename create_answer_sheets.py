@@ -13,7 +13,7 @@ def create_answer_sheets(player_list: List[str] = None,
     if os.path.exists(meta_file):
         metadata_df = pl.read_excel(source="quiz_metadata.xlsx",
                                     read_csv_options={"dtypes": {"Question": pl.Utf8}})
-        metadata_df = metadata_df.drop(["Round_type", "Valid_answers"]) \
+        metadata_df = metadata_df.select(["Question"]) \
             .with_columns(pl.lit("").alias("Answer"))\
             .drop_nulls()
         print(metadata_df)
@@ -46,4 +46,3 @@ if __name__ == "__main__":
                          write_path=score_sheets_path,
                          force_overwrite=True,
                          fill_test_values=True)
-    print(master_df)

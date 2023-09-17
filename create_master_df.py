@@ -23,7 +23,7 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
         .with_columns(pl.col("Question").cast(pl.Utf8)) \
         .with_columns(pl.col("Question").str.split(".").list.get(0).alias("Round")) \
         .with_columns(pl.col("Valid_answers").str.split(","))\
-        .drop_nulls()
+        .drop_nulls("Question")
 
     for player in player_list:
         player_df = pl.read_excel(f"{read_path + player}.xlsx",
@@ -38,4 +38,4 @@ if __name__ == "__main__":
     player_list = ["Max", "Sophie", "Michael", "Edward"]
     read_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
     create_master_df = (player_list, read_path)
-
+    print(create_master_df)

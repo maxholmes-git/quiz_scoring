@@ -21,8 +21,8 @@ def score_logic(player, player_list):
             The polars logic.
     """
     logic = pl.when(pl.col("Round_type") == "least_popular").then(least_popular_logic(player, player_list))\
-              .when(pl.col("Round_type") == "aggregate_difficulty").then(aggregate_difficulty_logic(player))#\
-              #.when(pl.col("Round_type") == "text").then()
+              .when(pl.col("Round_type") == "aggregate_difficulty").then(aggregate_difficulty_logic(player))\
+              .when(pl.col("Round_type") == "text").then(text_logic(player))
     return logic
 
 
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     score_sheets_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
     create_answer_sheets(player_list,
                          write_path=score_sheets_path,
-                         force_overwrite=True,
+                         force_overwrite=False,
                          fill_test_values=True)
     master_df = create_master_df(player_list, read_path=score_sheets_path)
     print(master_df)
