@@ -12,7 +12,8 @@ def create_answer_sheets(player_list: List[str] = None,
     meta_file = "quiz_metadata.xlsx"
     template_file = "template_answer_sheet.xlsx"
     metadata_df = pl.read_excel(source="quiz_metadata.xlsx",
-                                read_csv_options={"dtypes": {"Question": pl.Utf8}})\
+                                read_csv_options={"dtypes": {"Question": pl.Utf8},
+                                                  "truncate_ragged_lines": True})\
         .drop_nulls("Question")
     validate_quiz_metadata(metadata_df)
     metadata_df = metadata_df.select(["Question"]) \

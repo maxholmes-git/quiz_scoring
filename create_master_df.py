@@ -20,7 +20,8 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
             The master dataframe (metadata + answers)
     """
     master_df = pl.read_excel("quiz_metadata.xlsx",
-                              read_csv_options={"dtypes": {"Question": pl.Utf8}}) \
+                              read_csv_options={"dtypes": {"Question": pl.Utf8},
+                                                "truncate_ragged_lines": True}) \
         .with_columns(pl.col("Question").cast(pl.Utf8)) \
         .with_columns(pl.col("Question").str.split(".").list.get(0).alias("Round")) \
         .with_columns(pl.col("Valid_answers").str.to_uppercase().str.split(","))\

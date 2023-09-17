@@ -1,5 +1,4 @@
 import polars as pl
-from typing import List
 from create_answer_sheets import create_answer_sheets
 from least_popular_logic import least_popular_logic
 from aggregate_difficulty_logic import aggregate_difficulty_logic
@@ -83,13 +82,19 @@ def create_round_scoring_df(df, player_list):
 
 def main():
     player_list = ["Max", "Sophie", "Michael", "Edward"]
-    score_sheets_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
+    score_sheets_path = "C:\\Users\\ready\\Desktop\\Quiz_test_files\\Quiz_player_scoresheets\\"
     create_answer_sheets(player_list,
                          write_path=score_sheets_path,
-                         force_overwrite=False,
+                         force_overwrite=True,
                          fill_test_values=True)
     master_df = create_master_df(player_list, read_path=score_sheets_path)
-    print(master_df)
+
+    locked_answers_path = "C:\\Users\\ready\\Desktop\\Quiz_test_files\\Locked_answer_csvs\\"
+    master_df = lock_answers(master_df,
+                             player_list,
+                             question_value="2.3",
+                             activate=True,
+                             write_path=locked_answers_path)
 
     for player in player_list:
         master_df = master_df.with_columns(score_logic(player, player_list).alias(f"{player}_score"))
