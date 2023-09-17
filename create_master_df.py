@@ -1,5 +1,6 @@
 import polars as pl
 from typing import List
+from validate_answer_sheet import validate_answer_sheet
 
 
 def create_master_df(player_list: List[str] = None, read_path: str = ""):
@@ -22,12 +23,15 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
                               read_csv_options={"dtypes": {"Question": pl.Utf8}}) \
         .with_columns(pl.col("Question").cast(pl.Utf8)) \
         .with_columns(pl.col("Question").str.split(".").list.get(0).alias("Round")) \
-        .with_columns(pl.col("Valid_answers").str.split(","))\
+        .with_columns(pl.col("Valid_answers").str.to_uppercase().str.split(","))\
         .drop_nulls("Question")
 
     for player in player_list:
         player_df = pl.read_excel(f"{read_path + player}.xlsx",
-                                  read_csv_options={"dtypes": {"Question": pl.Utf8}}) \
+                                  read_csv_options={"dtypes": {"Question": pl.Utf8},
+                                                    "truncate_ragged_lines": True})
+        validate_answer_sheet(player, player_df, master_df)
+        player_df = player_df\
             .with_columns(pl.col("Question").cast(pl.Utf8)) \
             .select(pl.col("Question"),
                     pl.col("Answer").str.strip().str.to_uppercase().alias(f"{player}_answer"))
@@ -37,5 +41,5 @@ def create_master_df(player_list: List[str] = None, read_path: str = ""):
 if __name__ == "__main__":
     player_list = ["Max", "Sophie", "Michael", "Edward"]
     read_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
-    create_master_df = (player_list, read_path)
-    print(create_master_df)
+    master_df = create_master_df(player_list, read_path)
+

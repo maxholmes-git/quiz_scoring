@@ -3,7 +3,9 @@ from typing import List
 from create_answer_sheets import create_answer_sheets
 from least_popular_logic import least_popular_logic
 from aggregate_difficulty_logic import aggregate_difficulty_logic
+from text_logic import text_logic
 from create_master_df import create_master_df
+
 
 def score_logic(player, player_list):
     """
@@ -28,7 +30,7 @@ def score_logic(player, player_list):
 
 def count_nulls_per_round(aggregate_difficulty_df):
     aggregate_difficulty_rounds = set([row["Round"] for row in aggregate_difficulty_df.iter_rows(named=True)])
-    #Need to come up with something better than this to empty the dataframe
+    # Need to come up with something better than this to empty the dataframe
     all_null_counts_df = aggregate_difficulty_df.null_count().filter(pl.col("Round") == pl.lit(1000))\
         .with_columns(pl.col("Round").cast(str))
     for round_number in aggregate_difficulty_rounds:
@@ -60,7 +62,6 @@ def score_aggregate_difficulty_rounds(aggregate_difficulty_df, round_scoring_df,
              .alias(f"{player}_score")
              for player in player_list]
     )
-
     return round_scoring_df
 
 
@@ -80,7 +81,7 @@ def create_round_scoring_df(df, player_list):
     return final_df
 
 
-if __name__ == "__main__":
+def main():
     player_list = ["Max", "Sophie", "Michael", "Edward"]
     score_sheets_path = "C:\\Users\\ready\\Desktop\\Quiz_player_scoresheets\\"
     create_answer_sheets(player_list,
@@ -102,4 +103,8 @@ if __name__ == "__main__":
 
     aggregate_scoring_df = create_round_scoring_df(master_df, player_list)
     print(aggregate_scoring_df)
-    #delete_files_in_directory(player_list, score_sheets_path)
+    # delete_files_in_directory(player_list, score_sheets_path)
+
+
+if __name__ == "__main__":
+    main()
