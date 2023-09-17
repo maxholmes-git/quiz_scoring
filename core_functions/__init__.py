@@ -1,12 +1,4 @@
-from importlib import import_module
-import pkgutil
-import inspect
-import sys
-
-
-for importer, modname, ispkg in pkgutil.iter_modules(["core_functions"]):
-    imported_module = import_module(f"core_functions.{modname}")
-    if modname in dir(imported_module):
-        attribute = getattr(imported_module, modname)
-        if inspect.isfunction(attribute):
-            setattr(sys.modules[__name__], modname, attribute)
+from core_functions.create_master_df import create_master_df
+from core_functions.delete_files_in_directory import delete_files_in_directory
+from core_functions.lock_answers import lock_answers
+from core_functions.create_answer_sheets import create_answer_sheets

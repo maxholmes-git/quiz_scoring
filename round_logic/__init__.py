@@ -1,12 +1,3 @@
-from importlib import import_module
-import pkgutil
-import inspect
-import sys
-
-
-for importer, modname, ispkg in pkgutil.iter_modules(["round_logic"]):
-    imported_module = import_module(f"round_logic.{modname}")
-    if modname in dir(imported_module):
-        attribute = getattr(imported_module, modname)
-        if inspect.isfunction(attribute):
-            setattr(sys.modules[__name__], modname, attribute)
+from round_logic.aggregate_difficulty_logic import aggregate_difficulty_logic
+from round_logic.least_popular_logic import least_popular_logic
+from round_logic.text_logic import text_logic
