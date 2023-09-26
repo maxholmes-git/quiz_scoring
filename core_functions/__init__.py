@@ -2,3 +2,4 @@ from core_functions.create_master_df import create_master_df
 from core_functions.delete_files_in_directory import delete_files_in_directory
 from core_functions.lock_answers import lock_answers
 from core_functions.create_answer_sheets import create_answer_sheets
+from core_functions.write_table_to_html import write_table_to_html

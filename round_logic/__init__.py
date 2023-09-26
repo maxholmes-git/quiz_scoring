@@ -1,3 +1,4 @@
 from round_logic.aggregate_difficulty_logic import aggregate_difficulty_logic
 from round_logic.least_popular_logic import least_popular_logic
 from round_logic.text_logic import text_logic
+from round_logic.score_logic import score_logic
