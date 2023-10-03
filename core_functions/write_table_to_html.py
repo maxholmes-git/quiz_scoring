@@ -1,5 +1,8 @@
-def write_table_to_html(df, player_list):
-    f = open("player_scoring_test.html", "w")
+def write_table_to_html(df, player_list, filename, replace_in_cols = None):
+    print(f"Writing to: {filename}")
+    f = open(filename, "w")
+    #    <meta http-equiv="refresh" content="1" >
+    javascripts = """<script type="text/javascript" src="https://livejs.com/live.js"></script>"""
     table_style = """
 <style>
     .styled-table {
@@ -41,14 +44,16 @@ def write_table_to_html(df, player_list):
         color: #009879;
     }
 </style>"""
-
-    columns = [column.replace("_score", "") for column in df.columns]
+    if replace_in_cols:
+        columns = [column.replace("_score", "") for column in df.columns]
+    else:
+        columns = df.columns
     rows = [row for row in df.iter_rows()]
     all_rows_str = ""
     for num in range(0, len(rows)):
         row_num_str = "<tr>" + "".join([f"<td>{value}</td>" for value in rows[num]]) + "</tr>\n"
         all_rows_str = all_rows_str + row_num_str
-    f.write(f"""
+    f.write(f"""{javascripts}
 {table_style}
 
 <div>

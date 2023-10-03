@@ -1,0 +1,13 @@
+players:
+    - Max
+    - Edward
+    - Sophie
+    - Michael
+    
+paths:
+    scoresheets:
+        - C:\Users\ready\Desktop\Quiz_test_files\Quiz_player_scoresheets\
+    metadata:
+        - C:\Users\ready\PycharmProjects\Quiz_polars\quiz_metadata.xlsx
+    locked_answers:
+        - C:\Users\ready\Desktop\Quiz_test_files\Locked_answer_csvs\

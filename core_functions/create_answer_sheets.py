@@ -18,7 +18,6 @@ def create_answer_sheets(player_list: List[str] = None,
     validate_quiz_metadata(metadata_df)
     metadata_df = metadata_df.select(["Question"]) \
         .with_columns(pl.lit("").alias("Answer"))
-    print(metadata_df)
     metadata_df.write_excel(write_path + template_file,
                             dtype_formats={pl.Float64: "@"})
     for player in player_list:
