@@ -26,7 +26,7 @@ def create_answer_sheets(player_list: List[str] = None,
             if fill_test_values:
                 write_player_df = metadata_df.with_columns(
                     random_fill_logic(df=metadata_df,
-                                      random_values=["A", "B", "C", "D", "E"]).alias("Answer")
+                                      random_values=["A", "B", "C", "D", "E", "X"]).alias("Answer")
                 )
             else:
                 write_player_df = metadata_df

@@ -1,9 +1,9 @@
-def write_table_to_html(df, player_list, filename, replace_in_cols = None):
+def write_table_to_html(df, player_list, filename, replace_in_cols = None, mode="w"):
     print(f"Writing to: {filename}")
-    f = open(filename, "w")
-    #    <meta http-equiv="refresh" content="1" >
-    javascripts = """<script type="text/javascript" src="https://livejs.com/live.js"></script>"""
-    table_style = """
+    f = open(filename, mode)
+    if mode == "w":
+        javascripts = """<script type="text/javascript" src="https://livejs.com/live.js"></script>"""
+        table_style = """
 <style>
     .styled-table {
         border-collapse: collapse;
@@ -44,6 +44,8 @@ def write_table_to_html(df, player_list, filename, replace_in_cols = None):
         color: #009879;
     }
 </style>"""
+    else:
+        javascripts, table_style = ("","")
     if replace_in_cols:
         columns = [column.replace("_score", "") for column in df.columns]
     else:

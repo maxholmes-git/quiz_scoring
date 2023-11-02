@@ -44,9 +44,9 @@ def least_popular_logic(player: str = "", player_list: List[str] = None) -> pl.E
                                           (opponent_valid_answer.list.get(0).is_not_null() &
                                            opponent_player_intersect.list.get(0).is_null())
 
-    logic = pl.when(player_answer_is_valid & player_answer_is_unique & ~opponent_answer_is_valid_unique).then(3) \
-        .when(player_answer_is_valid & player_answer_is_unique).then(2) \
-        .when(player_answer_is_valid).then(1) \
+    logic = pl.when(player_answer_is_valid & player_answer_is_unique & ~opponent_answer_is_valid_unique).then(4) \
+        .when(player_answer_is_valid & player_answer_is_unique).then(3) \
+        .when(player_answer_is_valid).then(2) \
         .otherwise(0)
 
     return logic

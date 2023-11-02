@@ -2,4 +2,8 @@
 
 call create_venv.bat
 
-python -m main console_run
+call venv/Scripts.activate.bat
+
+python -m main
+
+pause
